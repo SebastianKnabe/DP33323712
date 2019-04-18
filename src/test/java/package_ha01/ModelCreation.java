@@ -20,10 +20,12 @@ public class ModelCreation
 		Clazz pizza = model.createClazz("PizzaShop");
 		Clazz burger = model.createClazz("BurgerBude");
 		Clazz doener = model.createClazz("DoenerLaden");
+		Clazz asia = model.createClazz("AsiaLaden");
 		
 		caterer.withKidClazzes(pizza);
 		caterer.withKidClazzes(burger);
 		caterer.withKidClazzes(doener);
+		caterer.withKidClazzes(asia);
 
 		delivery.withUniDirectional(caterer, "subcontractor", Cardinality.ONE);
 		
