@@ -17,6 +17,8 @@ class CreatorCreator{
       jsonIdMap.with(new DoenerLadenPOCreator());
       jsonIdMap.with(new PizzaShopCreator());
       jsonIdMap.with(new PizzaShopPOCreator());
+      jsonIdMap.with(new AsiaLadenCreator());
+      jsonIdMap.with(new AsiaLadenPOCreator());
       return jsonIdMap;
    }
 }

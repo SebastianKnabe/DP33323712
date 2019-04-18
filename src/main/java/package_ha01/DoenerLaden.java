@@ -27,7 +27,7 @@ public  class DoenerLaden extends Caterer
 {
 	public void deliver( String addr, String foodNo )
 	 {
-	      System.out.println("Liefere Doener Nummer "+addr+ " an " + foodNo);
+	      System.out.println("Liefere Doener Nummer "+foodNo+ " an " + addr);
 	 }
 
    

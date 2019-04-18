@@ -31,6 +31,8 @@ import package_ha01.util.DoenerLadenSet;
 import package_ha01.PizzaShop;
 import package_ha01.util.PizzaShopSet;
 import java.util.Collection;
+import package_ha01.AsiaLaden;
+import package_ha01.util.AsiaLadenSet;
 
 public class CatererSet extends SimpleSet<Caterer>
 {
@@ -160,4 +162,19 @@ public class CatererSet extends SimpleSet<Caterer>
       return this;
    }
 
-}
+
+
+   public AsiaLadenSet instanceOfAsiaLaden()
+   {
+      AsiaLadenSet result = new AsiaLadenSet();
+      
+      for(Object obj : this)
+      {
+         if (obj instanceof AsiaLaden)
+         {
+            result.with(obj);
+         }
+      }
+      
+      return result;
+   }}

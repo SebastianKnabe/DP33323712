@@ -33,7 +33,7 @@ public  class DeliveryService implements SendableEntity
    //==========================================================================
    public void deliver( String addr, String foodNo )
    {
-      
+      subcontractor.deliver(addr, foodNo);
    }
 
    
