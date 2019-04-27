@@ -2,6 +2,11 @@ package package_ha01;
 
 import org.junit.Test;
 
+// HA1: 06/10
+// - 1 Das ist kein Test es fehlen Assertion. Naechstes mal ziehe ich mehr Punkte ab
+// -2 Kein sdmlib nutzen
+// -1 Carterer muss abstract oder interface
+
 public class Hausaufgabe_01
 {
 	@Test
