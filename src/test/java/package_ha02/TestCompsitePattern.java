@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+// HA02: 10/10
+// Du brauchst keine Methode walk, genau machen was angefordert ist
 public class TestCompsitePattern
 {
 	private final String PROJEKT = "Projekt";
