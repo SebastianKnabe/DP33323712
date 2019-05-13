@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+// HA03: 10/10
 public class TestAssembler
 {
 	@Test

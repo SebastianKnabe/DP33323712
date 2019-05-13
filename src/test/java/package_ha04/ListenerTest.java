@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
+// HA04: 10/10
 public class ListenerTest
 {
 	private final String PROJEKT = "Projekt";
