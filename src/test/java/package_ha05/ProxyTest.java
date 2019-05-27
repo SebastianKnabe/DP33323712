@@ -14,6 +14,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+// HA05: 07/10
+// -3 Test fehlgeschlagen. Benutze Platform.runLater um zwei views gelichzeitig zu starten
 public class ProxyTest extends ApplicationTest
 {
 	private Button button;
