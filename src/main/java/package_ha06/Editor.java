@@ -13,7 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import package_ha06.commands.LineCommand;
+import package_ha06.drawable.Group;
 import package_ha06.drawable.Line;
 
 public class Editor extends Application
@@ -21,18 +21,17 @@ public class Editor extends Application
 	private final int SCREEN_HEIGHT = 600;
 	private final int SCREEN_WIDHT = 600;
 	
-	Stack<String> lastCommands = new Stack<String>();
-	Stack<String> doCommands = new Stack<String>();
+	public Stack<String> lastCommands = new Stack<String>();
+	public Stack<String> doCommands = new Stack<String>();
 	
 	
 	VBox vbox = new VBox();
 	HBox buttonBox = new HBox();
-	private Canvas drawBoard;
-	private Label commands = new Label("");
+	public Canvas drawBoard;
 	public TextField commandLine = new TextField();
 	public Button okButton = new Button("ok");
-	public Button doButton = new Button("do");
-	public Button undoButton = new Button("undo");
+	public Group rootGroup;
+	public CommandHelper commandHelper = new CommandHelper();
 	
 	public static void main(String[] args)
 	{
@@ -48,23 +47,17 @@ public class Editor extends Application
 		
 		drawBoard = new Canvas(SCREEN_WIDHT - 100, SCREEN_HEIGHT - 100);
 		vbox.getChildren().add(drawBoard);
-		vbox.getChildren().add(commands);
-		vbox.getChildren().add(commandLine);
 		vbox.getChildren().add(buttonBox);
 		
+		buttonBox.getChildren().add(commandLine);
 		buttonBox.getChildren().add(okButton);
-		buttonBox.getChildren().add(doButton);
-		buttonBox.getChildren().add(undoButton);
-		
 		okButton.setOnAction( e -> {
 			addComand();
 		});
-		undoButton.setOnAction(e -> {
-			undo();
-		});
-		doButton.setOnAction(e -> { 
-			doCommands();
-		});
+		
+		commandHelper.initCommands(this);
+		rootGroup = new Group();
+		rootGroup.setName("root");
 		
         Scene scene = new Scene(root, 600, 600);
         stage.setTitle("2D Vector Editor");        
@@ -73,37 +66,13 @@ public class Editor extends Application
 	}
 	
 	public void addComand() {
-		String command = commandLine.getText(); 
-				lastCommands.push(command);
-		LineCommand lineCommand = new LineCommand();
-		lineCommand.parseCommand(command);
-		updateLabel();
+		String command = commandLine.getText();
+		commandHelper.parseCommand(command);
 		commandLine.clear();
-		
-		if(lineCommand.getDrawable() != null) {
-			lineCommand.getDrawable().draw(drawBoard.getGraphicsContext2D());
-		}
-		
-		
+		rootGroup.draw(drawBoard.getGraphicsContext2D());
 	}
 	
-	public void updateLabel() {
-		String commands = "";
-		for(Object command : lastCommands.toArray()) {
-			commands = commands + "\n" + command.toString();
-		}
-		this.commands.setText(commands);
-	}
-	
-	public void undo() {
-		String undo = lastCommands.pop();
-		updateLabel();
-		doCommands.push(undo);
-	}
-	
-	public void doCommands() {
-		String doString = doCommands.pop();
-		updateLabel();
-		lastCommands.push(doString);
+	public void clear() {
+		drawBoard.getGraphicsContext2D().clearRect(0, 0, SCREEN_WIDHT, SCREEN_HEIGHT);
 	}
 }
