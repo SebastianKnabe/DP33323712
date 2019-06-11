@@ -8,6 +8,7 @@ import org.testfx.framework.junit.ApplicationTest;
 import javafx.stage.Stage;
 import package_ha06.Editor;
 
+// HA06: 10/10
 public class PrototypeTest extends ApplicationTest
 {
 	Editor editor;
