@@ -1,0 +1,230 @@
+- c1: 	ClassModel
+  classes: 	warehouse512 	warehouseOrder3 	warehouseProduct4 	lot5 	palettePlace6 	
+  defaultPropertyStyle: 	POJO
+  defaultRoleType: 	"java.util.ArrayList<%s>"
+  mainJavaDir: 	"src/main/java"
+  packageName: 	package_ha07.warehouse51
+  packageSrcFolder: 	"src/main/java/package_ha07/warehouse51"
+
+- warehouse512: 	Clazz
+  model: 	c1
+  modified: 	false
+  name: 	Warehouse51
+  propertyStyle: 	POJO
+  roles: 	orders7 	products8 	places9 	
+
+- warehouseOrder3: 	Clazz
+  attributes: 	address10 	id11 	
+  model: 	c1
+  modified: 	false
+  name: 	WarehouseOrder
+  propertyStyle: 	POJO
+  roles: 	warehouse5112 	warehouseProduct13 	
+
+- warehouseProduct4: 	Clazz
+  attributes: 	id14 	name15 	
+  model: 	c1
+  modified: 	false
+  name: 	WarehouseProduct
+  propertyStyle: 	POJO
+  roles: 	warehouse5116 	orders17 	lots18 	
+
+- lot5: 	Clazz
+  attributes: 	id19 	lotSize20 	
+  model: 	c1
+  modified: 	false
+  name: 	Lot
+  propertyStyle: 	POJO
+  roles: 	warehouseProduct21 	place22 	
+
+- palettePlace6: 	Clazz
+  attributes: 	column23 	row24 	id25 	
+  model: 	c1
+  modified: 	false
+  name: 	PalettePlace
+  propertyStyle: 	POJO
+  roles: 	warehouse5126 	lot27 	
+
+- orders7: 	AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	warehouse512
+  modified: 	false
+  name: 	orders
+  other: 	warehouse5112
+  propertyStyle: 	POJO
+  roleType: 	"java.util.ArrayList<%s>"
+
+- products8: 	AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	warehouse512
+  modified: 	false
+  name: 	products
+  other: 	warehouse5116
+  propertyStyle: 	POJO
+  roleType: 	"java.util.ArrayList<%s>"
+
+- places9: 	AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	warehouse512
+  modified: 	false
+  name: 	places
+  other: 	warehouse5126
+  propertyStyle: 	POJO
+  roleType: 	"java.util.ArrayList<%s>"
+
+- address10: 	Attribute
+  clazz: 	warehouseOrder3
+  modified: 	false
+  name: 	address
+  propertyStyle: 	POJO
+  type: 	String
+
+- id11: 	Attribute
+  clazz: 	warehouseOrder3
+  modified: 	false
+  name: 	id
+  propertyStyle: 	POJO
+  type: 	String
+
+- warehouse5112: 	AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	warehouseOrder3
+  modified: 	false
+  name: 	warehouse51
+  other: 	orders7
+  propertyStyle: 	POJO
+  roleType: 	"java.util.ArrayList<%s>"
+
+- warehouseProduct13: 	AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	warehouseOrder3
+  modified: 	false
+  name: 	warehouseProduct
+  other: 	orders17
+  propertyStyle: 	POJO
+  roleType: 	"java.util.ArrayList<%s>"
+
+- id14: 	Attribute
+  clazz: 	warehouseProduct4
+  modified: 	false
+  name: 	id
+  propertyStyle: 	POJO
+  type: 	String
+
+- name15: 	Attribute
+  clazz: 	warehouseProduct4
+  modified: 	false
+  name: 	name
+  propertyStyle: 	POJO
+  type: 	String
+
+- warehouse5116: 	AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	warehouseProduct4
+  modified: 	false
+  name: 	warehouse51
+  other: 	products8
+  propertyStyle: 	POJO
+  roleType: 	"java.util.ArrayList<%s>"
+
+- orders17: 	AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	warehouseProduct4
+  modified: 	false
+  name: 	orders
+  other: 	warehouseProduct13
+  propertyStyle: 	POJO
+  roleType: 	"java.util.ArrayList<%s>"
+
+- lots18: 	AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	warehouseProduct4
+  modified: 	false
+  name: 	lots
+  other: 	warehouseProduct21
+  propertyStyle: 	POJO
+  roleType: 	"java.util.ArrayList<%s>"
+
+- id19: 	Attribute
+  clazz: 	lot5
+  modified: 	false
+  name: 	id
+  propertyStyle: 	POJO
+  type: 	String
+
+- lotSize20: 	Attribute
+  clazz: 	lot5
+  modified: 	false
+  name: 	lotSize
+  propertyStyle: 	POJO
+  type: 	double
+
+- warehouseProduct21: 	AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	lot5
+  modified: 	false
+  name: 	warehouseProduct
+  other: 	lots18
+  propertyStyle: 	POJO
+  roleType: 	"java.util.ArrayList<%s>"
+
+- place22: 	AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	lot5
+  modified: 	false
+  name: 	place
+  other: 	lot27
+  propertyStyle: 	POJO
+  roleType: 	"java.util.ArrayList<%s>"
+
+- column23: 	Attribute
+  clazz: 	palettePlace6
+  modified: 	false
+  name: 	column
+  propertyStyle: 	POJO
+  type: 	double
+
+- row24: 	Attribute
+  clazz: 	palettePlace6
+  modified: 	false
+  name: 	row
+  propertyStyle: 	POJO
+  type: 	double
+
+- id25: 	Attribute
+  clazz: 	palettePlace6
+  modified: 	false
+  name: 	id
+  propertyStyle: 	POJO
+  type: 	String
+
+- warehouse5126: 	AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	palettePlace6
+  modified: 	false
+  name: 	warehouse51
+  other: 	places9
+  propertyStyle: 	POJO
+  roleType: 	"java.util.ArrayList<%s>"
+
+- lot27: 	AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	palettePlace6
+  modified: 	false
+  name: 	lot
+  other: 	place22
+  propertyStyle: 	POJO
+  roleType: 	"java.util.ArrayList<%s>"
+
