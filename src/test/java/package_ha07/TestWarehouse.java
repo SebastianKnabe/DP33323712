@@ -14,6 +14,7 @@ import package_ha07.warehouse51.Warehouse51;
 import package_ha07.warehouse51.WarehouseBuilder;
 import package_ha07.warehouse51.WarehouseServer;
 
+// HA07: 10/10
 public class TestWarehouse
 {
 	@Test
