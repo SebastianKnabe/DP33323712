@@ -17,7 +17,7 @@ public class WarehouseBuilder
 	private static final String ORDER_PRODUCT = "orderProduct";
 	private static final String ADDRESS = "address";
 	public Warehouse51 theWareHouse;
-	private ShopProxy theShop;
+	public ShopProxy theShop;
 	private EventSource eventSource;
 	
 	public WarehouseBuilder() {
@@ -76,13 +76,23 @@ public class WarehouseBuilder
 			
 			Lot lot = product.getLots().get(0);
 			double lotSize = lot.getLotSize();
+			lot.setLotSize(lotSize - 1);
 		}
 	}
 
-	private WarehouseOrder getFromOrders(String orderId)
+	public WarehouseOrder getFromOrders(String orderId)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		for(WarehouseOrder order : theWareHouse.getOrders()) {
+			if(order.getId().equals(orderId)) {
+				return order;
+			}
+		}
+		
+		WarehouseOrder result = new WarehouseOrder()
+				.setId(orderId)
+				.setWarehouse51(theWareHouse);
+		
+		return result;
 	}
 
 	public Lot addLotToStock(String lotId, String productName, int size)
@@ -112,9 +122,7 @@ public class WarehouseBuilder
 		event.put(SIZE, "" + size);
 		eventSource.append(event);
 		
-		if(oldSize == 0.0) {
-			theShop.addProductToShop(lotId, productName, size);
-		}
+		theShop.addProductToShop(lotId, productName, size);
 		
 		return result;
 	}
@@ -151,6 +159,12 @@ public class WarehouseBuilder
 		Lot result = new Lot().setId(lotId);
 		
 		return result;
+	}
+
+	public String getEventSource()
+	{
+		String events = eventSource.encodeYaml();
+		return events;
 	}
 
 }

@@ -115,6 +115,7 @@ public class ShopServer
 	private static void retrieveNewEventsFromWarehouse()
 	{
 		String warehouseEvents = sendRequest("http://localhost:6789/getShopEvents", "lastKnown: " + lastKnownWarehouseEvents );
+
 		ArrayList<LinkedHashMap<String, String>> eventList = new Yamler().decodeList(warehouseEvents);
 		
 		executor.execute( () -> builder.applyEvents(eventList));
@@ -178,15 +179,24 @@ public class ShopServer
 
 			InputStream inputStream = http.getInputStream();
 			BufferedReader buf = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-			String line = buf.readLine();
+			StringBuilder text = new StringBuilder();
+			
+			while(true) {
+				String line = buf.readLine();
+				if(line == null) {
+					break;
+				}
+				text.append(line);
+			}
 
 			buf.close();
-			return line;
+			String response = text.toString();
+			return response;
 		} catch (Exception e)
 		{
 			executor.schedule(() -> sendRequest(urlString, yaml), 60, TimeUnit.SECONDS);
 		}
-		return "";
+		return null;
 	}
 
 }

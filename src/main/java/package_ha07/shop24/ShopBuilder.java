@@ -10,14 +10,16 @@ import org.fulib.yaml.Yamler;
 import package_ha07.warehouse51.PalettePlace;
 import package_ha07.warehouse51.Warehouse51;
 import package_ha07.warehouse51.WarehouseProduct;
+import package_ha07.warehouse51.WarehouseServer;
 
 public class ShopBuilder
 {
 	public static final String ADD_PRODUCT_TO_SHOP = "addProductToShop";
 	public static final String ADD_LOT_TO_STOCK = "add lot to stock";
+	public static final String ORDER_PRODUCT = "orderProduct";
 	public static final String NUMBER_OF_ITEMS = "numberOfItems";
 	public static final String PRODUCT = "product";
-	public static final String ADD_CUSTOMER = "product";
+	public static final String ADD_CUSTOMER = "addCustomer";
 	public static final String NAME = "name";
 	public static final String ADDRESS = "address";
 	private EventSource eventSource;
@@ -54,10 +56,36 @@ public class ShopBuilder
 		
 	}
 
-	public void addCustomer(String string, String string2)
+	public void addCustomer(String name, String address)
 	{
-		// TODO Auto-generated method stub
+		LinkedHashMap<String, String> event = eventSource.getEvent(name);
+		if(event != null) {
+			return;
+		}
+		ShopCustomer customer = getFromCustomer(name)
+				.setAddress(address);
 		
+		event= new LinkedHashMap<String, String>();
+		event.put(EventSource.EVENT_TYPE, ADD_CUSTOMER);
+		event.put(EventSource.EVENT_KEY, name);
+		event.put(ADDRESS, customer.getAddress());
+		eventSource.append(event);
+	}
+
+	public ShopCustomer getFromCustomer(String name)
+	{
+		
+		for(ShopCustomer customer : theShop.getCustomers()) {
+			if(customer.getName().equals(name)) {
+				return customer;
+			}
+		}
+		
+		ShopCustomer result = new ShopCustomer()
+				.setName(name)
+				.setShop24(theShop);
+				
+		return result;
 	}
 
 	private void addProductToShop(String bookingId, String productName, int numberOfItems)
@@ -101,10 +129,51 @@ public class ShopBuilder
 		return result;
 	}
 
-	public void orderProduct(String string, String string2, String string3)
+	public void orderProduct(String orderId, String productName, String customerName)
 	{
-		// TODO Auto-generated method stub
+		LinkedHashMap<String, String> event = eventSource.getEvent(orderId);
+		if(event != null) {
+			return;
+		}
 		
+		ShopOrder order = getFromOrders(orderId);
+		ShopCustomer customer = getFromCustomer(customerName);
+		ShopProduct product = getFromProducts(productName);
+		
+		double size = product.getInStock() - 1;
+		if(size == 0) {
+			theShop.getProducts().remove(product);
+		}
+		product.setInStock(size);
+		
+		order.setShopCustomer(customer)
+			 .setShopProduct(product);
+		
+		event= new LinkedHashMap<String, String>();
+		event.put(EventSource.EVENT_TYPE, ORDER_PRODUCT);
+		event.put(EventSource.EVENT_KEY, orderId);
+		event.put(PRODUCT, order.getShopProduct().getName());
+		event.put(NAME, order.getShopCustomer().getName());
+		event.put(ADDRESS, order.getShopCustomer().getAddress());
+		eventSource.append(event);
+		
+		String yaml = eventSource.encodeYaml();
+		
+		ShopServer.sendRequest("http://localhost:6789/warehouseOrder", yaml);
+	}
+
+	public ShopOrder getFromOrders(String orderId)
+	{
+		for(ShopOrder order: theShop.getOrders()) {
+			if(order.getId().equals(orderId)) {
+				return order;
+			}
+		}
+		
+		ShopOrder result = new ShopOrder()
+				.setId(orderId)
+				.setShop24(theShop);
+		return result;
 	}
 
 }

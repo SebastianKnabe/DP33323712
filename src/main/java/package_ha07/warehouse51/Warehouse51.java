@@ -310,7 +310,7 @@ public class Warehouse51
 
    public Object getWarehouseEvents(HttpExchange x)
    {
-	   // TODO Auto-generated method stub
+	   System.out.println("getWarehouseEvents");
 	   return null;
    }
 

@@ -58,4 +58,9 @@ public class ShopProxy
 		
 		WarehouseServer.sendRequest("http://localhost:5678/ping", yaml);
 	}
+
+	public String getEventSource()
+	{
+		return eventSource.encodeYaml();
+	}
 }

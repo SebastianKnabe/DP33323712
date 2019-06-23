@@ -16,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import org.fulib.yaml.Yamler;
 
@@ -36,7 +37,7 @@ public class WarehouseServer {
 			HttpContext context = server.createContext("/getShopEvents");
 			context.setHandler( x -> handleRequest(x));
 			
-			HttpContext proxyContext = server.createContext("/warehouseProxy");
+			HttpContext proxyContext = server.createContext("/warehouseOrder");
 			proxyContext.setHandler( x -> handleWarehouseProxyRequest(x));
 			
 			server.start();
@@ -47,10 +48,36 @@ public class WarehouseServer {
 		}
 	}
 
-	private static Object handleWarehouseProxyRequest(HttpExchange x)
+	private static void handleWarehouseProxyRequest(HttpExchange x)
+	{
+		String events = getBody(x);
+		System.out.println("got " + events);
+		
+		writeAnswer(x, "OK");
+		
+		ArrayList<LinkedHashMap<String, String>> eventList = new Yamler().decodeList(events);
+		
+		executor.execute( () -> builder.applyEvents(eventList));
+	}
+	
+	private static void retrieveNewEventsFromShop()
 	{
 		// TODO Auto-generated method stub
-		return null;
+		
+	}
+
+	private static void writeAnswer(HttpExchange exchange, String response)
+	{
+		try {
+			byte[] bytes = response.getBytes(StandardCharsets.UTF_8);
+			exchange.sendResponseHeaders(200, bytes.length);
+			OutputStream os = exchange.getResponseBody();
+			os.write(bytes);
+			os.close();
+		} catch (IOException e) {
+			Logger.getGlobal().info("could not answer");
+		}
+		
 	}
 
 	private static void handleRequest(HttpExchange exchange) throws IOException
@@ -75,7 +102,7 @@ public class WarehouseServer {
 		ArrayList<LinkedHashMap<String, String>> list = new Yamler().decodeList(yaml);
 		builder.applyEvents(list);
 		
-		String response = "OK" + requestURI;
+		String response = builder.theShop.getEventSource();
 		exchange.sendResponseHeaders(200, response.getBytes().length);
 		OutputStream os = exchange.getResponseBody();
 		os.write(response.getBytes());
