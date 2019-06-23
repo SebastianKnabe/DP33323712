@@ -8,6 +8,7 @@ import org.fulib.yaml.EventSource;
 import org.fulib.yaml.Yamler;
 
 import package_ha07.warehouse51.PalettePlace;
+import package_ha07.warehouse51.Warehouse51;
 import package_ha07.warehouse51.WarehouseProduct;
 
 public class ShopBuilder
@@ -20,7 +21,8 @@ public class ShopBuilder
 	public static final String NAME = "name";
 	public static final String ADDRESS = "address";
 	private EventSource eventSource;
-	private Shop24 theShop;
+	public Shop24 theShop;
+	public Warehouse51 theWarehouse;
 	
 	public ShopBuilder() {
 		theShop = new Shop24();

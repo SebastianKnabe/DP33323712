@@ -14,6 +14,8 @@ public class WarehouseBuilder
 	private static final String LOT_ID = "lotId";
 	private static final String PRODUCT = "product";
 	private static final String SIZE = "size";
+	private static final String ORDER_PRODUCT = "orderProduct";
+	private static final String ADDRESS = "address";
 	public Warehouse51 theWareHouse;
 	private ShopProxy theShop;
 	private EventSource eventSource;
@@ -25,7 +27,7 @@ public class WarehouseBuilder
 		EventFiler eventFiler = new EventFiler(eventSource)
 				.setHistoryFileName("database/Warehouse.yaml");
 		
-		for(int i = 23; i < 26; i++) {
+		for(int i = 23; i < 28; i++) {
 			PalettePlace palette = new PalettePlace()
 					.setColumn(i)
 					.setRow(42)
@@ -44,9 +46,43 @@ public class WarehouseBuilder
 	public void applyEvents(ArrayList<LinkedHashMap<String, String>> list)
 	{
 		for(LinkedHashMap<String, String> map : list) {
-			
+			if(ADD_LOT_TO_STOCK.equals(map.get(EventSource.EVENT_TYPE))) {
+				int size = Integer.valueOf(map.get(SIZE));
+				addLotToStock(map.get(LOT_ID), map.get(PRODUCT), size);
+			}
+			else if(ORDER_PRODUCT.equals(map.get(EventSource.EVENT_TYPE))) {
+				orderProduct(map.get(EventSource.EVENT_KEY), map.get(PRODUCT), map.get(ADDRESS));
+			}
 		}
 		
+	}
+
+	private void orderProduct(String orderId, String productName, String address)
+	{
+		WarehouseOrder order = getFromOrders(orderId);
+		
+		if(order.getWarehouseProduct() == null) {
+			//new order
+			WarehouseProduct product = getFromProducts(productName);
+			order.setWarehouseProduct(product)
+					.setAddress(address);
+			
+			LinkedHashMap<String, String> event = new LinkedHashMap<String, String>();
+			event.put(EventSource.EVENT_TYPE, ORDER_PRODUCT);
+			event.put(EventSource.EVENT_KEY, orderId);
+			event.put(PRODUCT, product.getName());
+			event.put(ADDRESS, address);
+			eventSource.append(event);
+			
+			Lot lot = product.getLots().get(0);
+			double lotSize = lot.getLotSize();
+		}
+	}
+
+	private WarehouseOrder getFromOrders(String orderId)
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public Lot addLotToStock(String lotId, String productName, int size)

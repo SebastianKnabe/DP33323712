@@ -2,6 +2,8 @@ package package_ha07.warehouse51;
 
 import java.beans.PropertyChangeSupport;
 
+import com.sun.net.httpserver.HttpExchange;
+
 import java.beans.PropertyChangeListener;
 
 public class Warehouse51 
@@ -304,6 +306,12 @@ public class Warehouse51
       this.withoutPlaces(this.getPlaces().clone());
 
 
+   }
+
+   public Object getWarehouseEvents(HttpExchange x)
+   {
+	   // TODO Auto-generated method stub
+	   return null;
    }
 
 
