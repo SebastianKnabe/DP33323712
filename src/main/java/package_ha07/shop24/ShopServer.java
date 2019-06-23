@@ -31,10 +31,11 @@ public class ShopServer
 	private static ScheduledExecutorService executor;
 	private static ExecutorService threadPool;
 	private static String lastKnownWarehouseEvents = "0";
+	public static HttpServer server;
 
 	public static void main(String[] args)
 	{
-		HttpServer server = null;
+		server = null;
 		try
 		{
 			builder = new ShopBuilder();
@@ -115,10 +116,12 @@ public class ShopServer
 	private static void retrieveNewEventsFromWarehouse()
 	{
 		String warehouseEvents = sendRequest("http://localhost:6789/getShopEvents", "lastKnown: " + lastKnownWarehouseEvents );
-
+		
+		//decodeList() funktioniert nicht richtig
+		//ich uebergebe einen yaml string aber ich bekomme nicht die komplette eventList
 		ArrayList<LinkedHashMap<String, String>> eventList = new Yamler().decodeList(warehouseEvents);
 		
-		executor.execute( () -> builder.applyEvents(eventList));
+		threadPool.execute( () -> builder.applyEvents(eventList));
 
 	}
 

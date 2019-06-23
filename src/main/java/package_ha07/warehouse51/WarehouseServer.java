@@ -29,9 +29,10 @@ import package_ha07.shop24.ShopBuilder;
 public class WarehouseServer {
 	public static WarehouseBuilder builder;
 	private static ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+	public static HttpServer server;
 	
 	public static void main(String[] args) {
-		HttpServer server = null;
+		server = null;
 		try {
 			server = HttpServer.create(new InetSocketAddress(6789), 0);
 			HttpContext context = server.createContext("/getShopEvents");
@@ -51,7 +52,6 @@ public class WarehouseServer {
 	private static void handleWarehouseProxyRequest(HttpExchange x)
 	{
 		String events = getBody(x);
-		System.out.println("got " + events);
 		
 		writeAnswer(x, "OK");
 		

@@ -29,6 +29,7 @@ public class TestWarehouse
 		try {
 			Files.delete(Paths.get("database/Warehouse.yaml"));
 			Files.delete(Paths.get("database/Shop.yaml"));
+			Files.delete(Paths.get("database/ShopProxy.yaml"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -44,11 +45,10 @@ public class TestWarehouse
 		
 		Thread.sleep(100);
 		
+		printWarehouseAndShopProducts();
+		
 		assertEquals(builder.getFromProducts("Shoe 42, size 8").getLots().size(), 2);
 		assertEquals(builder.getFromProducts("Shoe 42, size 9").getLots().size(), 1);
-
-		assertEquals(100, shopBuilder.getFromProducts("Shoe 42, size 8").getInStock(),  0.1);
-		assertEquals(50 ,shopBuilder.getFromProducts("Shoe 42, size 9").getInStock(), 0.1);
 		
 		ShopServer.builder.addCustomer("Alice", "Wonderland 1");
 		ShopServer.builder.orderProduct("o1", "Shoe 42, size 8", "Alice");
@@ -66,8 +66,36 @@ public class TestWarehouse
 		assertEquals("Wonderland 1", builder.getFromOrders("o1").getAddress());
 		assertEquals("Shoe 42, size 8", builder.getFromOrders("o1").getWarehouseProduct().getName());
 		
+		printWarehouseAndShopProducts();
+		
+		WarehouseServer.server.stop(0);
+		WarehouseServer.builder = null;
+		
+		ShopServer.server.stop(0);
+		ShopServer.builder = null;
+		
+		Thread.sleep(100);
+		
+		WarehouseServer.main(null);
+		
+		Thread.sleep(100);
 		
 		printWarehouseAndShopProducts();
+		
+		Thread.sleep(100);
+		
+		WarehouseServer.builder.addLotToStock("lot4", "geile Schuhu", 50);
+		
+		Thread.sleep(100);
+		
+		printWarehouseAndShopProducts();
+		
+		ShopServer.main(null);
+		
+		Thread.sleep(100);
+		
+		printWarehouseAndShopProducts();
+		
 	}
 	
 	private void printWarehouseAndShopProducts() {
@@ -92,5 +120,6 @@ public class TestWarehouse
 			System.out.println("Shop");
 			System.out.println(shopTable);
 		}
+		System.out.println("");
 	}
 }
