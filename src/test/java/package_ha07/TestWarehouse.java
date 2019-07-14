@@ -22,6 +22,9 @@ import package_ha07.warehouse51.WarehouseProduct;
 import package_ha07.warehouse51.WarehouseServer;
 
 // HA07: 10/10
+// HA08: 0/10
+// HA09: 5/10  ==> -5 kein docker compose
+// HA10: 0/10 ==> kein volume
 public class TestWarehouse
 {
 	@Test
